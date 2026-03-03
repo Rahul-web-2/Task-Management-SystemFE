@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { login } from "../services/LoginApi.js";
 import { useNavigate } from "react-router-dom";
+import '../css/login.css'
 
 
 export default function Login() {
-const navigate = useNavigate();;
+    const navigate = useNavigate();;
     const [user, setUser] = useState({
         email: "",
         password: ""
@@ -33,8 +34,8 @@ const navigate = useNavigate();;
 
 
     return (
-        <div className="sign-up">
-            <form className="signUp-form" onSubmit={handleSubmit}>
+        <div className="login-page">
+            <form className="login-form" onSubmit={handleSubmit}>
 
                 <div className="form-group">
                     <label htmlFor="email">Email</label>
@@ -62,7 +63,7 @@ const navigate = useNavigate();;
                         required
                     />
                 </div>
- <button type="submit">Login</button>
+                <button type="submit">Login</button>
 
             </form>
         </div>

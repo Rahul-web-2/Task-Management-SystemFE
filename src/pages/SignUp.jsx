@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createUser } from "../services/SignUpApi.js";
+import '../css/signUp.css';
 
 export default function SignUp() {
 
@@ -30,8 +31,8 @@ export default function SignUp() {
   };
 
   return (
-    <div className="login-page">
-      <form className="login-form" onSubmit={handleSubmit}>
+    <div className="signUp-page">
+      <form className="signUp-form" onSubmit={handleSubmit}>
 
         <div className="form-group">
           <label>Name</label>
