@@ -7,36 +7,31 @@ import '../css/header.css';
 export default function Header() {
     const navigate = useNavigate();
     return (
-        <header className='site-header'>
-            <div className='header-container'>
-                <nav className='header-navigation'>
-                    <img
-                        src={Logo}
-                        alt='Logo of the website TaskBridge'
-                        width={150}
-                        height={150}
-                    />
+        <nav className='site-header'>
+            <div className='nav-container'>
 
-                    <ul id='header-link'>
-                        {NAV_LINKS.map(({ id, label, href }) =>
-                            <li key={id}>
-                                <a
-                                    className='header-link'
-                                    href={href}
-                                >
-                                    {label}
-                                </a>
-                            </li>
-                        )}
-                    </ul>
+                <div class="logo">
+                    <span class="logo-highlight">Task</span>Bridge
+                </div>
 
-                    <div className='header-btn'>
-                        <button onClick={() => navigate("/login")}>Login</button>
-                        <button onClick={() => navigate("/signup")}>Sign Up</button>
-                    </div>
+                <ul className='nav-links'>
+                    {NAV_LINKS.map(({ id, label, href }) =>
+                        <li key={id}>
+                            <a
+                                href={href}
+                            >
+                                {label}
+                            </a>
+                        </li>
+                    )}
+                </ul>
 
-                </nav>
+                <div className='nav-btn'>
+                    <button className="btn-login" onClick={() => navigate("/login")}>Login</button>
+                    <button className="btn-signUp" onClick={() => navigate("/signup")}>Sign Up</button>
+                </div>
+
             </div>
-        </header>
+        </nav>
     )
 }
