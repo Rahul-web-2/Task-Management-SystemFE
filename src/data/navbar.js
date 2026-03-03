@@ -1,7 +1,16 @@
-export const NAV_LINKS = [
+export const OWNER_NAME = "RAHUL LAKHCHAURA"
+export const CURRENT_YEAR = new Date().getFullYear();
 
-    { id: "home", label: "Home", href: "#home" },
-    { id: "about", label: "About us", href: "#about" },
-    { id: "service", label: "Service", href: "#service" },
-    { id: "contact", label: "Contact", href: "#contact" }
+export const NAV_LINKS = [
+    { id: "home", label: "Home", to: "/" },
+    { id: "about", label: "About Us", to: "/about" },
+    { id: "service", label: "Service", to: "/services" },
+    { id: "contact", label: "Contact", to: "/contact" }
+];
+
+export const NAV_LINKS2 = [
+    { id: "dashboard", label: "Dashboard", to: "/dashboard" },
+    { id: "projects", label: "Projects", to: "/projects" },
+    { id: "tasks", label: "Tasks", to: "/tasks" },
+    { id: "team", label: "Team", to: "/team" }
 ];

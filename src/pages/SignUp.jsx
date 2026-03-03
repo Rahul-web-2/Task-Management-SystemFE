@@ -22,8 +22,7 @@ export default function SignUp() {
 
     try {
       const data = await createUser(user);
-      console.log("User created:", data);
-      alert("Signup successful!");
+       navigate("/dashboard", { state: { name: data.name } });
     } catch (error) {
       console.error(error);
       alert("Error creating user");

@@ -23,8 +23,6 @@ export default function Login() {
 
         try {
             const data = await login(user);
-            console.log("User login:", data);
-            alert("login successful!");
             navigate("/dashboard", { state: { name: data.name } });
         } catch (error) {
             console.error(error);
