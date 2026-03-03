@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { NAV_LINKS } from '../data/navbar.js';
+import { NAV_LINKS2 } from '../data/navbar.js';
 import { NavLink } from "react-router-dom";
 
 import '../css/header.css';
@@ -15,7 +15,7 @@ export default function Header() {
                 </div>
 
                 <ul className='nav-links'>
-                    {NAV_LINKS.map(({ id, label, to }) => (
+                    {NAV_LINKS2.map(({ id, label, to }) => (
                         <li key={id}>
                             <NavLink
                                 to={to}
@@ -29,9 +29,8 @@ export default function Header() {
                     ))}
                 </ul>
 
-                <div className='nav-btn'>
-                    <button className="btn-login" onClick={() => navigate("/login")}>Login</button>
-                    <button className="btn-signUp" onClick={() => navigate("/signup")}>Sign Up</button>
+                 <div className='nav-btn'>
+                    <button className="btn-login" onClick={() => navigate("/")}>Log Out</button>
                 </div>
 
             </div>
