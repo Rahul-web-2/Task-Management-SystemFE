@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { NAV_LINKS2 } from '../data/navbar.js';
 import { NavLink } from "react-router-dom";
-
 import '../css/header.css';
 
 export default function Header() {
