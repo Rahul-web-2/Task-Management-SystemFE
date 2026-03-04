@@ -12,6 +12,7 @@ import Projects from "./pages/Projects";
 import Tasks from "./pages/Tasks";
 import Team from "./pages/Team";
 import Dashboard from './pages/Dashboard';
+import TaskDetails from "./pages/TaskDetails";
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/tasks" element={<Tasks />} />
+        <Route path="/tasks/:id" element={<TaskDetails />} />
         <Route path="/team" element={<Team />} />
       </Route>
 
