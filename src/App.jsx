@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import PublicLayout from "./layout/PublicLayout";
 import DashboardLayout from "./layout/DashboardLayout";
+import ProtectedRoute from "./component/ProtectedRoute";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -29,14 +30,15 @@ export default function App() {
       </Route>
 
 
-      {/* Dashboard Pages */}
-      <Route element={<DashboardLayout />}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/tasks" element={<Tasks />} />
-        <Route path="/tasks/:id" element={<TaskDetails />} />
-        <Route path="/team" element={<Team />} />
+      {/* Dashboard Pages (protected) */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/tasks/:id" element={<TaskDetails />} />
+          <Route path="/team" element={<Team />} />
+        </Route>
       </Route>
 
       {/* 404 */}

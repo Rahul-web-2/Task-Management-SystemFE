@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { NAV_LINKS2 } from '../data/navbar.js';
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx";
 import '../css/header.css';
 
-export default function Header() {
+export default function DashboardNavbar() {
     const navigate = useNavigate();
+    const { logout } = useAuth();
     return (
         <nav className='site-header'>
             <div className='nav-container'>
@@ -29,7 +31,7 @@ export default function Header() {
                 </ul>
 
                  <div className='nav-btn'>
-                    <button className="btn-login" onClick={() => navigate("/")}>Log Out</button>
+                    <button className="btn-login" onClick={() => { logout(); navigate("/login"); }}>Log Out</button>
                 </div>
 
             </div>

@@ -1,4 +1,4 @@
-export default function Home(){
+export default function Contact(){
     return(
         <h1>Contact</h1>
     )
