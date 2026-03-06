@@ -1,38 +1,368 @@
-:root {
-
-    --color-primary: #436EFC;
-    --color-primary-hover: #365EE8;
-    --color-secondary: #84A7FE;
-    --color-bg-app: #AFC6FC;
-    --color-bg-surface: #B7CCFF;
-    --color-bg-glass: rgba(255, 255, 255, 0.25);
-    --color-accent-success: #D5EACB;
-    --color-text-primary: #1F2A44;
-    --color-text-secondary: #4B587C;
-    --color-text-inverse: #FFFFFF;
-    --color-border-light: rgba(255, 255, 255, 0.4);
-    --color-border-strong: #436EFC;
-
-
-    --shadow-soft: 0 4px 12px rgba(67, 110, 252, 0.15);
-    --shadow-medium: 0 8px 24px rgba(67, 110, 252, 0.2);
-    --shadow-glass: 0 8px 32px rgba(31, 42, 68, 0.1);
-
-
-    --radius-sm: 8px;
-    --radius-md: 14px;
-    --radius-lg: 20px;
-    --radius-xl: 28px;
-
-
-    --space-xs: 4px;
-    --space-sm: 8px;
-    --space-md: 16px;
-    --space-lg: 24px;
-    --space-xl: 40px;
-
-
-    --transition-fast: 0.2s ease-in-out;
-    --transition-normal: 0.3s ease;
+.dashboard {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 24px;
 }
 
+/* ── Header ───────────────────────────── */
+.dashboard-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.dashboard-header h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--black);
+    letter-spacing: -0.3px;
+}
+
+.user-name {
+    color: var(--blue);
+}
+
+.dashboard-subtitle {
+    color: var(--gray-500);
+    margin-top: 4px;
+    font-size: 0.9rem;
+}
+
+.btn-create {
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(67,110,252,0.3);
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.btn-create:hover {
+    background: var(--blue-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(67,110,252,0.4);
+}
+
+/* ── Create Form ──────────────────────── */
+.create-task-form {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    margin-bottom: 36px;
+    box-shadow: var(--shadow-sm);
+}
+
+.create-task-form h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 16px;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.form-row input {
+    flex: 1;
+    min-width: 180px;
+}
+
+.create-task-form input,
+.create-task-form select,
+.create-task-form textarea {
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    color: var(--black);
+    font-size: 0.875rem;
+    outline: none;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.create-task-form input::placeholder,
+.create-task-form textarea::placeholder {
+    color: var(--gray-300);
+}
+
+.create-task-form input:focus,
+.create-task-form select:focus,
+.create-task-form textarea:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(67,110,252,0.12);
+}
+
+.create-task-form select {
+    cursor: pointer;
+}
+
+.create-task-form textarea {
+    width: 100%;
+    resize: vertical;
+    margin-bottom: 12px;
+}
+
+.create-task-form button[type="submit"] {
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    padding: 10px 24px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.create-task-form button[type="submit"]:hover:not(:disabled) {
+    background: var(--blue-hover);
+}
+
+.create-task-form button[type="submit"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ── Stats Grid ───────────────────────── */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.stat-card:hover {
+    border-color: var(--blue);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.stat-card.todo    { border-top: 3px solid #93C5FD; }
+.stat-card.in-progress { border-top: 3px solid #FCD34D; }
+.stat-card.done    { border-top: 3px solid #86EFAC; }
+
+.stat-number {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--blue);
+    letter-spacing: -1px;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ── Recent Tasks ─────────────────────── */
+.recent-tasks-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.recent-tasks-header h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--black);
+}
+
+.search-bar {
+    position: relative;
+    min-width: 260px;
+    flex: 1;
+    max-width: 380px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 9px 34px 9px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    font-size: 0.875rem;
+    outline: none;
+    color: var(--black);
+    transition: var(--transition);
+    font-family: inherit;
+}
+
+.search-bar input::placeholder {
+    color: var(--gray-300);
+}
+
+.search-bar input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(67,110,252,0.12);
+}
+
+.search-clear {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--gray-300);
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.search-clear:hover {
+    color: #EF4444;
+}
+
+.loading-text {
+    color: var(--gray-500);
+    text-align: center;
+    padding: 40px;
+    font-size: 0.9rem;
+}
+
+.empty-state {
+    background: var(--gray-50);
+    border: 1.5px dashed var(--gray-300);
+    border-radius: var(--radius-lg);
+    padding: 48px;
+    text-align: center;
+    color: var(--gray-500);
+    font-size: 0.9rem;
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.task-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    gap: 16px;
+}
+
+.task-card:hover {
+    border-color: var(--blue);
+    box-shadow: var(--shadow-md);
+    transform: translateX(3px);
+}
+
+.task-card-left h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--black);
+    margin-bottom: 2px;
+}
+
+.task-card-left p {
+    font-size: 0.8rem;
+    color: var(--gray-500);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 400px;
+}
+
+.task-id {
+    font-size: 0.75rem;
+    color: var(--gray-500);
+    font-weight: 500;
+    background: var(--gray-100);
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+/* ── Status Badges ────────────────────── */
+.status-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.status-badge.todo        { background: #DBEAFE; color: #1D4ED8; }
+.status-badge.in-progress { background: #FEF9C3; color: #854D0E; }
+.status-badge.done        { background: #DCFCE7; color: #15803D; }
+
+.view-all-btn {
+    margin-top: 16px;
+    background: transparent;
+    border: none;
+    color: var(--blue);
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    padding: 8px 0;
+    transition: var(--transition);
+}
+
+.view-all-btn:hover {
+    text-decoration: underline;
+}
+
+/* ── Responsive ───────────────────────── */
+@media (max-width: 640px) {
+    .dashboard {
+        padding: 24px 16px;
+    }
+
+    .dashboard-header h1 {
+        font-size: 1.4rem;
+    }
+
+    .search-bar {
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .task-card-left p {
+        max-width: 180px;
+    }
+}
