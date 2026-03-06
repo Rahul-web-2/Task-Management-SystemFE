@@ -1,22 +1,25 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { createUser } from "../services/SignUpApi.js";
 import { useAuth } from "../context/AuthContext.jsx";
-import '../css/signUp.css';
+import "../css/signUp.css";
 
 export default function SignUp() {
-  const navigate = useNavigate();
-  const { login: authLogin } = useAuth();
 
-  const [user, setUser] = useState({
+  const navigate = useNavigate();
+  const { login: authLogin, user } = useAuth();
+
+  if (user) return <Navigate to="/dashboard" replace />;
+
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: ""
   });
 
   const handleChange = (e) => {
-    setUser({
-      ...user,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value
     });
   };
@@ -25,7 +28,7 @@ export default function SignUp() {
     e.preventDefault();
 
     try {
-      const data = await createUser(user);
+      const data = await createUser(formData);
       authLogin(data);
       navigate("/dashboard");
     } catch (error) {
@@ -37,13 +40,14 @@ export default function SignUp() {
   return (
     <div className="signUp-page">
       <form className="signUp-form" onSubmit={handleSubmit}>
+        <h2>Create an account</h2>
 
         <div className="form-group">
           <label>Name</label>
           <input
             type="text"
             name="name"
-            value={user.name}
+            value={formData.name}
             onChange={handleChange}
             placeholder="Enter your name"
             required
@@ -55,7 +59,7 @@ export default function SignUp() {
           <input
             type="email"
             name="email"
-            value={user.email}
+            value={formData.email}
             onChange={handleChange}
             placeholder="Enter your email"
             required
@@ -67,7 +71,7 @@ export default function SignUp() {
           <input
             type="password"
             name="password"
-            value={user.password}
+            value={formData.password}
             onChange={handleChange}
             placeholder="Enter your password"
             required

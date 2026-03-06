@@ -1,0 +1,315 @@
+.tasks-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 24px;
+}
+
+/* ── Header ───────────────────────────── */
+.tasks-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.tasks-header h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--black);
+    letter-spacing: -0.3px;
+}
+
+.tasks-header p {
+    color: var(--gray-500);
+    margin-top: 4px;
+    font-size: 0.875rem;
+}
+
+.btn-create {
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(67,110,252,0.3);
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.btn-create:hover {
+    background: var(--blue-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(67,110,252,0.4);
+}
+
+/* ── Create Form ──────────────────────── */
+.create-form {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.create-form h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 4px;
+}
+
+.create-form input,
+.create-form textarea,
+.create-form select {
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    color: var(--black);
+    font-size: 0.875rem;
+    outline: none;
+    font-family: inherit;
+    transition: var(--transition);
+    width: 100%;
+}
+
+.create-form input::placeholder,
+.create-form textarea::placeholder {
+    color: var(--gray-300);
+}
+
+.create-form input:focus,
+.create-form textarea:focus,
+.create-form select:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(67,110,252,0.12);
+}
+
+.create-form textarea {
+    resize: vertical;
+}
+
+.form-selects {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.form-selects select {
+    flex: 1;
+    min-width: 140px;
+    cursor: pointer;
+}
+
+.create-form button[type="submit"] {
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    padding: 10px 24px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: var(--transition);
+    box-shadow: 0 2px 8px rgba(67,110,252,0.3);
+}
+
+.create-form button[type="submit"]:hover:not(:disabled) {
+    background: var(--blue-hover);
+}
+
+.create-form button[type="submit"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ── Filter Tabs ──────────────────────── */
+.filter-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.filter-tab {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    color: var(--gray-500);
+    padding: 7px 16px;
+    border-radius: 24px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+}
+
+.filter-tab:hover {
+    color: var(--blue);
+    border-color: var(--blue);
+    background: var(--blue-light);
+}
+
+.filter-tab.active {
+    background: var(--blue);
+    color: var(--white);
+    border-color: var(--blue);
+    font-weight: 600;
+}
+
+.filter-tab .count {
+    background: rgba(0,0,0,0.1);
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.filter-tab.active .count {
+    background: rgba(255,255,255,0.25);
+}
+
+/* ── Task List ────────────────────────── */
+.tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.task-item {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    gap: 16px;
+}
+
+.task-item:hover {
+    border-color: var(--blue);
+    box-shadow: var(--shadow-md);
+    transform: translateX(3px);
+}
+
+.task-item-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.task-item-main h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--black);
+    margin-bottom: 3px;
+}
+
+.task-desc {
+    font-size: 0.8rem;
+    color: var(--gray-500);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.task-item-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+/* ── Badges ───────────────────────────── */
+.status-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.status-badge.todo        { background: #DBEAFE; color: #1D4ED8; }
+.status-badge.in-progress { background: #FEF9C3; color: #854D0E; }
+.status-badge.done        { background: #DCFCE7; color: #15803D; }
+
+.priority-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.priority-badge.low    { background: #F0FDF4; color: #166534; }
+.priority-badge.medium { background: #FFFBEB; color: #92400E; }
+.priority-badge.high   { background: #FEF2F2; color: #991B1B; }
+
+.delete-btn {
+    background: transparent;
+    border: none;
+    color: var(--gray-300);
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.delete-btn:hover {
+    color: #EF4444;
+    background: #FEF2F2;
+}
+
+/* ── Empty / Loading ──────────────────── */
+.loading-text {
+    color: var(--gray-500);
+    text-align: center;
+    padding: 40px;
+    font-size: 0.9rem;
+}
+
+.empty-state {
+    background: var(--gray-50);
+    border: 1.5px dashed var(--gray-300);
+    border-radius: var(--radius-lg);
+    padding: 48px;
+    text-align: center;
+    color: var(--gray-500);
+    font-size: 0.9rem;
+}
+
+/* ── Responsive ───────────────────────── */
+@media (max-width: 640px) {
+    .tasks-page {
+        padding: 24px 16px;
+    }
+
+    .tasks-header h1 {
+        font-size: 1.4rem;
+    }
+
+    .task-item-meta {
+        gap: 6px;
+    }
+}
