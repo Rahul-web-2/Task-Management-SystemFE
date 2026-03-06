@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { login } from "../services/LoginApi.js";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx";
 import '../css/login.css'
 
 
 export default function Login() {
-    const navigate = useNavigate();;
+    const navigate = useNavigate();
+    const { login: authLogin } = useAuth();
     const [user, setUser] = useState({
         email: "",
         password: ""
@@ -23,6 +25,7 @@ export default function Login() {
 
         try {
             const data = await login(user);
+            authLogin(data);
             navigate("/dashboard");
         } catch (error) {
             console.error(error);

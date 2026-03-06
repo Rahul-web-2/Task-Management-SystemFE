@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { createUser } from "../services/SignUpApi.js";
+import { useAuth } from "../context/AuthContext.jsx";
 import '../css/signUp.css';
 
 export default function SignUp() {
+  const navigate = useNavigate();
+  const { login: authLogin } = useAuth();
 
   const [user, setUser] = useState({
     name: "",
@@ -22,7 +26,8 @@ export default function SignUp() {
 
     try {
       const data = await createUser(user);
-       navigate("/dashboard", { state: { name: data.name } });
+      authLogin(data);
+      navigate("/dashboard");
     } catch (error) {
       console.error(error);
       alert("Error creating user");
