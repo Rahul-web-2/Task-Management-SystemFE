@@ -23,7 +23,7 @@ export const getTasksByUser = async (email) => {
 };
 
 export const updateTask = async (id, task) => {
-    const response = await fetch(`${API}/api/task/${id}`, {
+    const response = await fetch(`${API}/api/task/update/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(task)
