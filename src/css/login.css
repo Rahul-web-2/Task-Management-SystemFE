@@ -80,9 +80,25 @@
     box-shadow: 0 4px 14px rgba(67,110,252,0.3);
 }
 
-.login-form button[type="submit"]:hover {
+.login-form button[type="submit"]:hover:not(:disabled) {
     background: var(--blue-hover);
     transform: translateY(-1px);
+}
+
+.login-form button[type="submit"]:disabled {
+    background: var(--gray-300);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.form-error {
+    font-size: 0.85rem;
+    color: #dc2626;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: var(--radius-md);
+    padding: 8px 12px;
+    margin: 0;
 }
 
 @media (max-width: 480px) {
