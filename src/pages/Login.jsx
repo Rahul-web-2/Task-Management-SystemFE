@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { login } from "../services/LoginApi.js";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import '../css/login.css'
 
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_SECONDS = 30;
 
 export default function Login() {
     const navigate = useNavigate();
@@ -12,6 +14,24 @@ export default function Login() {
         email: "",
         password: ""
     });
+    const [error, setError] = useState("");
+    const [attempts, setAttempts] = useState(0);
+    const [lockUntil, setLockUntil] = useState(0);
+    const [countdown, setCountdown] = useState(0);
+
+    useEffect(() => {
+        if (lockUntil <= Date.now()) return;
+        const interval = setInterval(() => {
+            const remaining = Math.ceil((lockUntil - Date.now()) / 1000);
+            if (remaining <= 0) {
+                setCountdown(0);
+                clearInterval(interval);
+            } else {
+                setCountdown(remaining);
+            }
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [lockUntil]);
 
     const handleChange = (e) => {
         setUser({
@@ -22,14 +42,25 @@ export default function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (countdown > 0) return;
 
         try {
             const data = await login(user);
+            setAttempts(0);
             authLogin(data);
             navigate("/dashboard");
-        } catch (error) {
-            console.error(error);
-            alert("Error in login user");
+        } catch {
+            const newAttempts = attempts + 1;
+            setAttempts(newAttempts);
+            if (newAttempts >= MAX_ATTEMPTS) {
+                const until = Date.now() + LOCKOUT_SECONDS * 1000;
+                setLockUntil(until);
+                setCountdown(LOCKOUT_SECONDS);
+                setAttempts(0);
+                setError(`Too many failed attempts. Try again in ${LOCKOUT_SECONDS}s.`);
+            } else {
+                setError(`Invalid email or password. ${MAX_ATTEMPTS - newAttempts} attempt(s) remaining.`);
+            }
         }
     };
 
@@ -65,7 +96,12 @@ export default function Login() {
                         required
                     />
                 </div>
-                <button type="submit">Login</button>
+
+                {error && <p className="form-error">{error}</p>}
+
+                <button type="submit" disabled={countdown > 0}>
+                    {countdown > 0 ? `Try again in ${countdown}s` : "Login"}
+                </button>
 
             </form>
         </div>

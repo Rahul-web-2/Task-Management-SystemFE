@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { createUser } from "../services/SignUpApi.js";
 import { useAuth } from "../context/AuthContext.jsx";
 import "../css/signUp.css";
+
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_SECONDS = 30;
 
 export default function SignUp() {
 
@@ -16,6 +19,24 @@ export default function SignUp() {
     email: "",
     password: ""
   });
+  const [error, setError] = useState("");
+  const [attempts, setAttempts] = useState(0);
+  const [lockUntil, setLockUntil] = useState(0);
+  const [countdown, setCountdown] = useState(0);
+
+  useEffect(() => {
+    if (lockUntil <= Date.now()) return;
+    const interval = setInterval(() => {
+      const remaining = Math.ceil((lockUntil - Date.now()) / 1000);
+      if (remaining <= 0) {
+        setCountdown(0);
+        clearInterval(interval);
+      } else {
+        setCountdown(remaining);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [lockUntil]);
 
   const handleChange = (e) => {
     setFormData({
@@ -26,14 +47,25 @@ export default function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (countdown > 0) return;
 
     try {
       const data = await createUser(formData);
+      setAttempts(0);
       authLogin(data);
       navigate("/dashboard");
-    } catch (error) {
-      console.error(error);
-      alert("Error creating user");
+    } catch {
+      const newAttempts = attempts + 1;
+      setAttempts(newAttempts);
+      if (newAttempts >= MAX_ATTEMPTS) {
+        const until = Date.now() + LOCKOUT_SECONDS * 1000;
+        setLockUntil(until);
+        setCountdown(LOCKOUT_SECONDS);
+        setAttempts(0);
+        setError(`Too many failed attempts. Try again in ${LOCKOUT_SECONDS}s.`);
+      } else {
+        setError(`Sign up failed. ${MAX_ATTEMPTS - newAttempts} attempt(s) remaining.`);
+      }
     }
   };
 
@@ -78,7 +110,11 @@ export default function SignUp() {
           />
         </div>
 
-        <button type="submit">Sign Up</button>
+        {error && <p className="form-error">{error}</p>}
+
+        <button type="submit" disabled={countdown > 0}>
+          {countdown > 0 ? `Try again in ${countdown}s` : "Sign Up"}
+        </button>
 
       </form>
     </div>
