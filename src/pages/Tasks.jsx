@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import { getTasksByUser, createTask, deleteTask } from "../services/TaskApi.js";
@@ -7,175 +7,352 @@ import "../css/tasks.css";
 const STATUSES = ["ALL", "TODO", "IN_PROGRESS", "DONE"];
 
 export default function Tasks() {
+
     const navigate = useNavigate();
     const { user } = useAuth();
+
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState("ALL");
+
     const [showForm, setShowForm] = useState(false);
-    const [newTask, setNewTask] = useState({ title: "", description: "", status: "TODO", priority: "MEDIUM" });
     const [creating, setCreating] = useState(false);
 
+    const [newTask, setNewTask] = useState({
+        title: "",
+        description: "",
+        status: "TODO",
+        priority: "MEDIUM"
+    });
+
+    /* ---------------- LOAD TASKS ---------------- */
+
     const loadTasks = async () => {
+
+        if (!user?.id) return;
+
         try {
+
+            console.log("Fetching tasks for user:", user.id);
+
             const data = await getTasksByUser(user.id);
-            setTasks(data);
-        } catch {
+
+            console.log("TASKS FROM API:", data);
+
+            setTasks(data || []);
+
+        } catch (err) {
+
+            console.error("Task fetch error:", err);
             setTasks([]);
+
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        if (user?.id) loadTasks();
-    }, [user]);
 
-    const filtered = filter === "ALL" ? tasks : tasks.filter(t => t.status === filter);
+        if (!user?.id) return;
+
+        loadTasks();
+
+    }, [user?.id]);
+
+    /* ---------------- FILTER TASKS ---------------- */
+
+    const filteredTasks = useMemo(() => {
+
+        if (filter === "ALL") return tasks;
+
+        return tasks.filter(t => t.status === filter);
+
+    }, [tasks, filter]);
+
+    /* ---------------- CREATE TASK ---------------- */
 
     const handleCreate = async (e) => {
+
         e.preventDefault();
+
+        if (!user?.id) return;
+
         setCreating(true);
+
         try {
+
             await createTask(newTask, user.id);
-            setNewTask({ title: "", description: "", status: "TODO", priority: "MEDIUM" });
+
+            setNewTask({
+                title: "",
+                description: "",
+                status: "TODO",
+                priority: "MEDIUM"
+            });
+
             setShowForm(false);
+
             await loadTasks();
+
         } catch {
+
             alert("Failed to create task");
+
         } finally {
             setCreating(false);
         }
     };
 
+    /* ---------------- DELETE TASK ---------------- */
+
     const handleDelete = async (e, id) => {
+
         e.stopPropagation();
-        if (!confirm("Delete this task?")) return;
+
+        if (!window.confirm("Delete this task?")) return;
+
         try {
+
             await deleteTask(id);
+
             setTasks(prev => prev.filter(t => t.id !== id));
+
         } catch {
+
             alert("Failed to delete task");
+
         }
     };
 
-    const statusClass = { TODO: "todo", IN_PROGRESS: "in-progress", DONE: "done" };
-    const priorityClass = { LOW: "low", MEDIUM: "medium", HIGH: "high" };
+    const statusClass = {
+        TODO: "todo",
+        IN_PROGRESS: "in-progress",
+        DONE: "done"
+    };
+
+    const priorityClass = {
+        LOW: "low",
+        MEDIUM: "medium",
+        HIGH: "high"
+    };
 
     return (
+
         <div className="tasks-page">
 
+            {/* HEADER */}
+
             <div className="tasks-header">
+
                 <div>
                     <h1>Tasks</h1>
                     <p>{tasks.length} task{tasks.length !== 1 ? "s" : ""} total</p>
                 </div>
-                <button className="btn-create" onClick={() => setShowForm(!showForm)}>
+
+                <button
+                    className="btn-create"
+                    onClick={() => setShowForm(!showForm)}
+                >
                     {showForm ? "Cancel" : "+ New Task"}
                 </button>
+
             </div>
 
+            {/* CREATE FORM */}
+
             {showForm && (
+
                 <div className="create-form">
+
                     <h3>New Task</h3>
+
                     <form onSubmit={handleCreate}>
+
                         <input
                             type="text"
                             placeholder="Task title *"
                             value={newTask.title}
-                            onChange={e => setNewTask({ ...newTask, title: e.target.value })}
+                            onChange={(e) =>
+                                setNewTask({ ...newTask, title: e.target.value })
+                            }
                             required
                         />
+
                         <textarea
                             placeholder="Description (optional)"
                             value={newTask.description}
-                            onChange={e => setNewTask({ ...newTask, description: e.target.value })}
+                            onChange={(e) =>
+                                setNewTask({
+                                    ...newTask,
+                                    description: e.target.value
+                                })
+                            }
                             rows={3}
                         />
+
                         <div className="form-selects">
+
                             <select
                                 value={newTask.status}
-                                onChange={e => setNewTask({ ...newTask, status: e.target.value })}
+                                onChange={(e) =>
+                                    setNewTask({
+                                        ...newTask,
+                                        status: e.target.value
+                                    })
+                                }
                             >
                                 <option value="TODO">To Do</option>
                                 <option value="IN_PROGRESS">In Progress</option>
                                 <option value="DONE">Done</option>
                             </select>
+
                             <select
                                 value={newTask.priority}
-                                onChange={e => setNewTask({ ...newTask, priority: e.target.value })}
+                                onChange={(e) =>
+                                    setNewTask({
+                                        ...newTask,
+                                        priority: e.target.value
+                                    })
+                                }
                             >
                                 <option value="LOW">Low Priority</option>
                                 <option value="MEDIUM">Medium Priority</option>
                                 <option value="HIGH">High Priority</option>
                             </select>
+
                         </div>
+
                         <button type="submit" disabled={creating}>
                             {creating ? "Creating..." : "Create Task"}
                         </button>
+
                     </form>
+
                 </div>
+
             )}
 
+            {/* FILTER TABS */}
+
             <div className="filter-tabs">
-                {STATUSES.map(s => (
-                    <button
-                        key={s}
-                        className={`filter-tab ${filter === s ? "active" : ""}`}
-                        onClick={() => setFilter(s)}
-                    >
-                        {s === "ALL" ? "All" : s.replace("_", " ")}
-                        <span className="count">
-                            {s === "ALL" ? tasks.length : tasks.filter(t => t.status === s).length}
-                        </span>
-                    </button>
-                ))}
+
+                {STATUSES.map(status => {
+
+                    const count =
+                        status === "ALL"
+                            ? tasks.length
+                            : tasks.filter(t => t.status === status).length;
+
+                    return (
+
+                        <button
+                            key={status}
+                            className={`filter-tab ${filter === status ? "active" : ""}`}
+                            onClick={() => setFilter(status)}
+                        >
+
+                            {status === "ALL"
+                                ? "All"
+                                : status.replace("_", " ")}
+
+                            <span className="count">{count}</span>
+
+                        </button>
+
+                    );
+                })}
+
             </div>
 
+            {/* TASK LIST */}
+
             {loading ? (
+
                 <p className="loading-text">Loading tasks...</p>
-            ) : filtered.length === 0 ? (
+
+            ) : filteredTasks.length === 0 ? (
+
                 <div className="empty-state">
+
                     <p>
+
                         {filter === "ALL"
                             ? "No tasks yet. Create one to get started!"
                             : `No ${filter.replace("_", " ")} tasks.`}
+
                     </p>
+
                 </div>
+
             ) : (
+
                 <div className="tasks-list">
-                    {filtered.map(task => (
+
+                    {filteredTasks.map(task => (
+
                         <div
                             key={task.id}
                             className="task-item"
-                            onClick={() => navigate(`/tasks/${task.id}`, { state: { task } })}
+                            onClick={() =>
+                                navigate(`/tasks/${task.id}`, {
+                                    state: { task }
+                                })
+                            }
                         >
+
                             <div className="task-item-main">
+
                                 <h4>{task.title}</h4>
-                                {task.description && <p className="task-desc">{task.description}</p>}
+
+                                {task.description && (
+                                    <p className="task-desc">
+                                        {task.description}
+                                    </p>
+                                )}
+
                             </div>
+
                             <div className="task-item-meta">
+
                                 {task.priority && (
-                                    <span className={`priority-badge ${priorityClass[task.priority] || ""}`}>
+                                    <span
+                                        className={`priority-badge ${
+                                            priorityClass[task.priority] || ""
+                                        }`}
+                                    >
                                         {task.priority}
                                     </span>
                                 )}
-                                <span className={`status-badge ${statusClass[task.status] || ""}`}>
+
+                                <span
+                                    className={`status-badge ${
+                                        statusClass[task.status] || ""
+                                    }`}
+                                >
                                     {task.status?.replace("_", " ")}
                                 </span>
+
                                 <button
                                     className="delete-btn"
-                                    onClick={(e) => handleDelete(e, task.id)}
+                                    onClick={(e) =>
+                                        handleDelete(e, task.id)
+                                    }
                                     title="Delete task"
                                 >
                                     ×
                                 </button>
+
                             </div>
+
                         </div>
+
                     ))}
+
                 </div>
+
             )}
 
         </div>
+
     );
 }
