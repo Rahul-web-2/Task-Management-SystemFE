@@ -18,7 +18,7 @@ export default function Tasks() {
 
     const loadTasks = async () => {
         try {
-            const data = await getTasksByUser(user.email);
+            const data = await getTasksByUser(user.id);
             setTasks(data);
         } catch {
             setTasks([]);
@@ -28,7 +28,7 @@ export default function Tasks() {
     };
 
     useEffect(() => {
-        if (user?.email) loadTasks();
+        if (user?.id) loadTasks();
     }, [user]);
 
     const filtered = filter === "ALL" ? tasks : tasks.filter(t => t.status === filter);
@@ -37,7 +37,7 @@ export default function Tasks() {
         e.preventDefault();
         setCreating(true);
         try {
-            await createTask(newTask, user.email);
+            await createTask(newTask, user.id);
             setNewTask({ title: "", description: "", status: "TODO", priority: "MEDIUM" });
             setShowForm(false);
             await loadTasks();
