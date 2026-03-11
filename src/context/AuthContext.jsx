@@ -9,8 +9,13 @@ export function AuthProvider({ children }) {
     });
 
     const login = (userData) => {
-        localStorage.setItem("user", JSON.stringify(userData));
-        setUser(userData);
+
+        const safeUser = {
+        id: userData.id,
+        username: userData.name
+    };
+        localStorage.setItem("user", JSON.stringify(safeUser));
+        setUser(safeUser);
     };
 
     const logout = () => {

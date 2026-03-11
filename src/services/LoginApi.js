@@ -10,7 +10,11 @@ export const login = async (user) => {
     });
 
     if (!response.ok) {
-        throw new Error("Login failed")
+        const text = await response.text();
+        if (text === "USER_NOT_FOUND") {
+            throw new Error("USER_NOT_FOUND");
+        }
+        throw new Error("Invalid credentials")
     }
     return await response.json();
 };
