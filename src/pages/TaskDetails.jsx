@@ -69,7 +69,7 @@ export default function TaskDetails() {
         );
     }
 
-    const isOwner = task.userId === user?.id;
+    const isOwner = task.user?.id === user?.id;
 
     const statusClass = { TODO: "todo", IN_PROGRESS: "in-progress", DONE: "done" };
     const priorityClass = { LOW: "low", MEDIUM: "medium", HIGH: "high" };
