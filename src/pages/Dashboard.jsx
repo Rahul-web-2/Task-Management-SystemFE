@@ -17,19 +17,19 @@ export default function Dashboard() {
     const [idError, setIdError] = useState(false);
     const [idLoading, setIdLoading] = useState(false);
 
-    const loadTasks = async () => {
-        try {
-            const data = await getTasksByUser(user.email);
-            setTasks(data);
-        } catch {
-            setTasks([]);
-        } finally {
-            setLoading(false);
-        }
-    };
+   const loadTasks = async () => {
+    try {
+        const data = await getTasksByUser(user.id); // use id instead of email
+        setTasks(data);
+    } catch {
+        setTasks([]);
+    } finally {
+        setLoading(false);
+    }
+};
 
     useEffect(() => {
-        if (user?.email) loadTasks();
+        if (user?.id) loadTasks();
     }, [user]);
 
     const stats = {
@@ -43,7 +43,7 @@ export default function Dashboard() {
         e.preventDefault();
         setCreating(true);
         try {
-            await createTask(newTask, user.email);
+            await createTask(newTask, user.id);
             setNewTask({ title: "", description: "", status: "TODO", priority: "MEDIUM" });
             setShowForm(false);
             await loadTasks();
@@ -89,7 +89,7 @@ export default function Dashboard() {
 
             <div className="dashboard-header">
                 <div>
-                    <h1>Welcome back, <span className="user-name">{user?.name || user?.email}</span></h1>
+                    <h1>Welcome back, <span className="user-name">{user?.username || user?.id}</span></h1>
                     <p className="dashboard-subtitle">Here's what's on your plate today.</p>
                 </div>
                 <button className="btn-create" onClick={() => setShowForm(!showForm)}>
