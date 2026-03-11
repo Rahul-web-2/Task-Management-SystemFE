@@ -1,7 +1,7 @@
 const API = import.meta.env.VITE_API;
 
-export const createTask = async (task, userEmail) => {
-    const response = await fetch(`${API}/api/task/user/${userEmail}`, {
+export const createTask = async (task, userId) => {
+    const response = await fetch(`${API}/api/task/user/${userId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(task)
@@ -16,8 +16,8 @@ export const getById = async (id) => {
     return await response.json();
 };
 
-export const getTasksByUser = async (email) => {
-    const response = await fetch(`${API}/api/task/user/${email}`);
+export const getTasksByUser = async (userId) => {
+    const response = await fetch(`${API}/api/task/user/${userId}`);
     if (!response.ok) throw new Error("Failed to fetch tasks");
     return await response.json();
 };
