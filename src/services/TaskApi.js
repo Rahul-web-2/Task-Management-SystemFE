@@ -17,9 +17,19 @@ export const getById = async (id) => {
 };
 
 export const getTasksByUser = async (userId) => {
+
     const response = await fetch(`${API}/api/task/user/${userId}`);
-    if (!response.ok) throw new Error("Failed to fetch tasks");
-    return await response.json();
+
+    if (!response.ok) {
+        
+        throw new Error("Failed to fetch tasks");
+    }
+
+    const data = await response.json();
+
+    
+
+    return data;
 };
 
 export const updateTask = async (id, task) => {
