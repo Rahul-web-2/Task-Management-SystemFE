@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { login } from "../services/LoginApi.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import '../css/login.css'
 
@@ -8,13 +8,18 @@ const MAX_ATTEMPTS = 5;
 const LOCKOUT_SECONDS = 30;
 
 export default function Login() {
+
+
     const navigate = useNavigate();
+
     const { login: authLogin } = useAuth();
     const [user, setUser] = useState({
         email: "",
         password: ""
     });
+    
     const [error, setError] = useState("");
+    const [notFound, setNotFound] = useState(false);
     const [attempts, setAttempts] = useState(0);
     const [lockUntil, setLockUntil] = useState(0);
     const [countdown, setCountdown] = useState(0);
@@ -47,9 +52,16 @@ export default function Login() {
         try {
             const data = await login(user);
             setAttempts(0);
+            setNotFound(false);
             authLogin(data);
             navigate("/dashboard");
-        } catch {
+        } catch (err) {
+            if (err.message === "USER_NOT_FOUND") {
+                setNotFound(true);
+                setError("");
+                return;
+            }
+            setNotFound(false);
             const newAttempts = attempts + 1;
             setAttempts(newAttempts);
             if (newAttempts >= MAX_ATTEMPTS) {
@@ -59,7 +71,7 @@ export default function Login() {
                 setAttempts(0);
                 setError(`Too many failed attempts. Try again in ${LOCKOUT_SECONDS}s.`);
             } else {
-                setError(`Invalid email or password. ${MAX_ATTEMPTS - newAttempts} attempt(s) remaining.`);
+                setError(`Invalid credentials. ${MAX_ATTEMPTS - newAttempts} attempt(s) remaining.`);
             }
         }
     };
@@ -97,6 +109,11 @@ export default function Login() {
                     />
                 </div>
 
+                {notFound && (
+                    <p className="form-error">
+                        No account found. <Link to="/signup">Create an account</Link>
+                    </p>
+                )}
                 {error && <p className="form-error">{error}</p>}
 
                 <button type="submit" disabled={countdown > 0}>
