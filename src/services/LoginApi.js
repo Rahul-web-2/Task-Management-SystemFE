@@ -1,20 +1,26 @@
 const API = import.meta.env.VITE_API;
 
 export const login = async (user) => {
-    const response = await fetch(`${API}/api/users/login`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-    });
+    try {
+        const response = await fetch(`${API}/api/users/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(user),
+        });
 
-    if (!response.ok) {
         const text = await response.text();
-        if (text === "USER_NOT_FOUND") {
-            throw new Error("USER_NOT_FOUND");
+
+        if (!response.ok) {
+            if (text === "USER_NOT_FOUND") {
+                throw new Error("User not found");
+            }
+            throw new Error("Invalid credentials");
         }
-        throw new Error("Invalid credentials")
+
+        return JSON.parse(text);
+    } catch (error) {
+        throw error;
     }
-    return await response.json();
 };
