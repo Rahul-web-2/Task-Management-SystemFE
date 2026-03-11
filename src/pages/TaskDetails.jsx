@@ -1,12 +1,14 @@
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getById, updateTask, deleteTask } from "../services/TaskApi.js";
+import { useAuth } from "../context/AuthContext.jsx";
 import "../css/taskDetails.css";
 
 export default function TaskDetails() {
     const { id } = useParams();
     const location = useLocation();
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     const [task, setTask] = useState(location.state?.task || null);
     const [editing, setEditing] = useState(false);
@@ -67,6 +69,8 @@ export default function TaskDetails() {
         );
     }
 
+    const isOwner = task.userId === user?.id;
+
     const statusClass = { TODO: "todo", IN_PROGRESS: "in-progress", DONE: "done" };
     const priorityClass = { LOW: "low", MEDIUM: "medium", HIGH: "high" };
 
@@ -78,7 +82,7 @@ export default function TaskDetails() {
             </button>
 
             <div className="task-details-card">
-                {editing ? (
+                {editing && isOwner ? (
                     <form className="edit-form" onSubmit={handleSave}>
                         <h2>Edit Task</h2>
 
@@ -149,12 +153,20 @@ export default function TaskDetails() {
                                 )}
                             </div>
                             <div style={{ display: "flex", gap: "8px" }}>
-                                <button className="btn-edit" onClick={() => setEditing(true)}>
-                                    Edit
-                                </button>
-                                <button className="btn-delete" onClick={handleDelete} disabled={deleting}>
-                                    {deleting ? "Deleting..." : "Delete"}
-                                </button>
+                                {isOwner ? (
+                                    <>
+                                        <button className="btn-edit" onClick={() => setEditing(true)}>
+                                            Edit
+                                        </button>
+                                        <button className="btn-delete" onClick={handleDelete} disabled={deleting}>
+                                            {deleting ? "Deleting..." : "Delete"}
+                                        </button>
+                                    </>
+                                ) : (
+                                    <span style={{ fontSize: "0.82rem", color: "var(--gray-500)", fontStyle: "italic", alignSelf: "center" }}>
+                                        View only
+                                    </span>
+                                )}
                             </div>
                         </div>
 
