@@ -1,50 +1,60 @@
 const API = import.meta.env.VITE_API;
 
-export const createTask = async (task, userId) => {
-    const response = await fetch(`${API}/api/task/user/${userId}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(task)
-    });
+export const createTask = async (task, userEmail) => {
+
+    const response = await fetch(
+        `${API}/api/tasks/user/${encodeURIComponent(userEmail)}`,
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(task)
+        }
+    );
+
     if (!response.ok) throw new Error("Failed to create the task");
+
     return await response.json();
 };
 
 export const getById = async (id) => {
-    const response = await fetch(`${API}/api/task/${id}`);
+
+    const response = await fetch(`${API}/api/tasks/user/${id}`);
+
     if (!response.ok) throw new Error("Failed to fetch Task");
+
     return await response.json();
 };
 
-export const getTasksByUser = async (userId) => {
+export const getTasksByUser = async (userEmail) => {
 
-    const response = await fetch(`${API}/api/task/user/${userId}`);
+    const response = await fetch(
+        `${API}/api/tasks/user/${encodeURIComponent(userEmail)}`
+    );
 
-    if (!response.ok) {
-        
-        throw new Error("Failed to fetch tasks");
-    }
+    if (!response.ok) throw new Error("Failed to fetch tasks");
 
-    const data = await response.json();
-
-    
-
-    return data;
+    return await response.json();
 };
 
 export const updateTask = async (id, task) => {
-    const response = await fetch(`${API}/api/task/update/${id}`, {
+
+    const response = await fetch(`${API}/api/tasks/update/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(task)
     });
+
     if (!response.ok) throw new Error("Failed to update task");
+
     return await response.json();
 };
 
 export const deleteTask = async (id) => {
-    const response = await fetch(`${API}/api/task/${id}`, {
+
+    const response = await fetch(`${API}/api/tasks/${id}`, {
         method: "DELETE"
     });
+
     if (!response.ok) throw new Error("Failed to delete task");
+
 };

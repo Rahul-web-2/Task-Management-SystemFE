@@ -33,9 +33,9 @@ export default function Tasks() {
 
         try {
 
-            console.log("Fetching tasks for user:", user.id);
+            console.log("Fetching tasks for user:", user.email);
 
-            const data = await getTasksByUser(user.id);
+            const data = await getTasksByUser(user.email);
 
             console.log("TASKS FROM API:", data);
 
@@ -53,11 +53,11 @@ export default function Tasks() {
 
     useEffect(() => {
 
-        if (!user?.id) return;
+        if (!user?.email) return;
 
         loadTasks();
 
-    }, [user?.id]);
+    }, [user?.email]);
 
     /* ---------------- FILTER TASKS ---------------- */
 
@@ -75,13 +75,13 @@ export default function Tasks() {
 
         e.preventDefault();
 
-        if (!user?.id) return;
+        if (!user?.email) return;
 
         setCreating(true);
 
         try {
 
-            await createTask(newTask, user.id);
+            await createTask(newTask, user.email);
 
             setNewTask({
                 title: "",
