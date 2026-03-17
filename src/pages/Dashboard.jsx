@@ -34,15 +34,11 @@ export default function Dashboard() {
 
         try {
 
-            const data = await getTasksByUser(user.id);
-
-            
-
+            const data = await getTasksByUser(user.email);
             setTasks(data || []);
 
         } catch (e) {
 
-            
             setTasks([]);
 
         } finally {
@@ -54,10 +50,10 @@ export default function Dashboard() {
 
     useEffect(() => {
 
-        if (!user?.id) return;
+        if (!user?.email) return;
         loadTasks();
 
-    }, [user?.id]);
+    }, [user?.email]);
 
     /* ---------------- STATS ---------------- */
 
@@ -77,7 +73,7 @@ export default function Dashboard() {
 
         try {
 
-            await createTask(newTask, user.id);
+            await createTask(newTask, user.email);
 
             setNewTask({
                 title: "",
@@ -113,7 +109,9 @@ export default function Dashboard() {
         return tasks.filter(t =>
             String(t.id) === q ||
             t.title?.toLowerCase().includes(q) ||
-            t.description?.toLowerCase().includes(q)
+            t.description?.toLowerCase().includes(q) ||
+            t.status?.toLowerCase().includes(q) ||
+            t.priority?.toLowerCase().includes(q)
         );
 
     }, [tasks, q]);
@@ -377,6 +375,7 @@ export default function Dashboard() {
                                         <p>{task.description}</p>
                                     )}
 
+
                                 </div>
 
                                 <div className="task-card-right">
@@ -385,12 +384,12 @@ export default function Dashboard() {
                                         #{task.id}
                                     </span>
 
-                                    <span
-                                        className={`status-badge ${
-                                            statusClass[task.status] || ""
-                                        }`}
-                                    >
-                                        {task.status?.replace("_", " ")}
+                                    <span className={`status-badge ${statusClass[task.status]}`}>
+                                        {task.status.replace("_", " ")}
+                                    </span>
+
+                                    <span className={`priority-badge ${task.priority?.toLowerCase()}`}>
+                                        {task.priority}
                                     </span>
 
                                 </div>
