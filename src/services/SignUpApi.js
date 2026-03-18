@@ -1,37 +1,27 @@
+import axios from "axios";
+
 const API = import.meta.env.VITE_API;
 
 export const createUser = async (userData) => {
-
-    const response = await fetch(`${API}/api/users/SignUp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData)
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-        // 👇 pass BOTH message + status
+    try {
+        const { data } = await axios.post(`${API}/api/users/SignUp`, userData);
+        return data;
+    } catch (error) {
         throw {
-            status: response.status,
-            message: data.message
+            status: error.response?.status,
+            message: error.response?.data?.message ?? error.message,
         };
     }
-
-    return data;
 };
 
 export const getUser = async () => {
-    const response = await fetch(`${API}/api/users`);
-
-    if (!response.ok) {
-        // 👇 pass BOTH message + status
+    try {
+        const { data } = await axios.get(`${API}/api/users`);
+        return data;
+    } catch (error) {
         throw {
-            status: response.status,
-            message: data.message
+            status: error.response?.status,
+            message: error.response?.data?.message ?? error.message,
         };
     }
-
-    return response.json();
 };
-

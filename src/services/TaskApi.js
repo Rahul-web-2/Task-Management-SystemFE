@@ -1,60 +1,39 @@
+import axios from "axios";
+
 const API = import.meta.env.VITE_API;
 
+const JSON_HEADERS = { "Content-Type": "application/json" };
+
 export const createTask = async (task, userEmail) => {
-
-    const response = await fetch(
+    const { data } = await axios.post(
         `${API}/api/tasks/user/${encodeURIComponent(userEmail)}`,
-        {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(task)
-        }
+        task,
+        { headers: JSON_HEADERS }
     );
-
-    if (!response.ok) throw new Error("Failed to create the task");
-
-    return await response.json();
+    return data;
 };
 
 export const getById = async (id) => {
-
-    const response = await fetch(`${API}/api/tasks/user/${id}`);
-
-    if (!response.ok) throw new Error("Failed to fetch Task");
-
-    return await response.json();
+    const { data } = await axios.get(`${API}/api/tasks/${id}`);
+    return data;
 };
 
 export const getTasksByUser = async (userEmail) => {
-
-    const response = await fetch(
+    const { data } = await axios.get(
         `${API}/api/tasks/user/${encodeURIComponent(userEmail)}`
     );
-
-    if (!response.ok) throw new Error("Failed to fetch tasks");
-
-    return await response.json();
+    return data;
 };
 
 export const updateTask = async (id, task) => {
-
-    const response = await fetch(`${API}/api/tasks/update/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(task)
-    });
-
-    if (!response.ok) throw new Error("Failed to update task");
-
-    return await response.json();
+    const { data } = await axios.put(
+        `${API}/api/tasks/update/${id}`,
+        task,
+        { headers: JSON_HEADERS }
+    );
+    return data;
 };
 
 export const deleteTask = async (id) => {
-
-    const response = await fetch(`${API}/api/tasks/${id}`, {
-        method: "DELETE"
-    });
-
-    if (!response.ok) throw new Error("Failed to delete task");
-
+    await axios.delete(`${API}/api/tasks/${id}`);
 };

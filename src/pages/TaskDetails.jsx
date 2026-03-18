@@ -36,7 +36,7 @@ export default function TaskDetails() {
     }, [task]);
 
     const handleDelete = async () => {
-        if (!confirm("Delete this task? This cannot be undone.")) return;
+        if (!window.confirm("Delete this task? This cannot be undone.")) return;
         setDeleting(true);
         try {
             await deleteTask(id);
