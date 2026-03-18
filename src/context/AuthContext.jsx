@@ -8,16 +8,15 @@ export function AuthProvider({ children }) {
         return stored ? JSON.parse(stored) : null;
     });
 
-   const login = (userData) => {
-
-    const safeUser = {
-        username: userData.name,
-        email: userData.email
+    const login = (userData) => {
+        const safeUser = {
+            id: userData.id,
+            username: userData.name,
+            email: userData.email
+        };
+        localStorage.setItem("user", JSON.stringify(safeUser));
+        setUser(safeUser);
     };
-
-    localStorage.setItem("user", JSON.stringify(safeUser));
-    setUser(safeUser);
-};
 
     const logout = () => {
         localStorage.removeItem("user");
