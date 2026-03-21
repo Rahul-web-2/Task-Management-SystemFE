@@ -11,8 +11,8 @@ export default function DashboardNavbar() {
 
     const close = () => setOpen(false);
 
-    const handleLogout = () => {
-        logout();
+    const handleLogout = async () => {
+        await logout();
         navigate("/login");
         close();
     };
