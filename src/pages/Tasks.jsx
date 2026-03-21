@@ -27,29 +27,18 @@ export default function Tasks() {
 
     /* ---------------- LOAD TASKS ---------------- */
 
-    const loadTasks = async () => {
-
-        if (!user?.id) return;
-
-        try {
-
-            console.log("Fetching tasks for user:", user.email);
-
-            const data = await getTasksByUser(user.email);
-
-            console.log("TASKS FROM API:", data);
-
-            setTasks(data || []);
-
-        } catch (err) {
-
-            console.error("Task fetch error:", err);
-            setTasks([]);
-
-        } finally {
-            setLoading(false);
-        }
-    };
+const loadTasks = async () => {
+    try {
+        const data = await getTasksByUser(); // ✅ no email passed
+        console.log("TASKS FROM API:", data);
+        setTasks(data || []);
+    } catch (err) {
+        console.error("Task fetch error:", err);
+        setTasks([]);
+    } finally {
+        setLoading(false);
+    }
+};
 
     useEffect(() => {
 

@@ -1,4 +1,12 @@
 import { createContext, useContext, useState } from "react";
+import axios from "axios";
+
+const API = import.meta.env.VITE_API;
+const api = axios.create({
+    baseURL: API,
+    withCredentials: true
+});
+
 
 const AuthContext = createContext(null);
 
@@ -18,10 +26,17 @@ export function AuthProvider({ children }) {
         setUser(safeUser);
     };
 
-    const logout = () => {
-        localStorage.removeItem("user");
-        setUser(null);
+    const logout = async () => {
+        try {
+            await api.post("/api/auth/logout"); // backend call
+        } catch (err) {
+            console.error("Logout error:", err);
+        } finally {
+            localStorage.removeItem("user");
+            setUser(null);
+        }
     };
+ 
 
     return (
         <AuthContext.Provider value={{ user, login, logout }}>

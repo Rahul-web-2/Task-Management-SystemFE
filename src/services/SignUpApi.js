@@ -2,9 +2,14 @@ import axios from "axios";
 
 const API = import.meta.env.VITE_API;
 
+const api = axios.create({
+    baseURL: API,
+    withCredentials: true,
+});
+
 export const createUser = async (userData) => {
     try {
-        const { data } = await axios.post(`${API}/api/users/SignUp`, userData);
+        const { data } = await api.post(`${API}/api/auth/signUp`, userData);
         return data;
     } catch (error) {
         throw {
@@ -16,7 +21,7 @@ export const createUser = async (userData) => {
 
 export const getUser = async () => {
     try {
-        const { data } = await axios.get(`${API}/api/users`);
+        const { data } = await aip.get(`${API}/api/auth`);
         return data;
     } catch (error) {
         throw {
