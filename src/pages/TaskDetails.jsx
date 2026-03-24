@@ -1,13 +1,13 @@
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getById, updateTask, deleteTask } from "../services/TaskApi.js";
 
 import "../css/taskDetails.css";
+import { navigateTo } from "../utils/navigation.js";
 
 export default function TaskDetails() {
     const { id } = useParams();
     const location = useLocation();
-    const navigate = useNavigate();
 
 
     const [task, setTask] = useState(location.state?.task || null);
@@ -20,7 +20,7 @@ export default function TaskDetails() {
         if (!task) {
             getById(id)
                 .then(data => setTask(data))
-                .catch(() => navigate("/tasks", { replace: true }));
+                .catch(() => navigateTo("/tasks", { replace: true }));
         }
     }, [id]);
 
@@ -40,7 +40,7 @@ export default function TaskDetails() {
         setDeleting(true);
         try {
             await deleteTask(id);
-            navigate("/tasks", { replace: true });
+            navigateTo("/tasks", { replace: true });
         } catch {
             alert("Failed to delete task");
             setDeleting(false);
@@ -77,7 +77,7 @@ export default function TaskDetails() {
     return (
         <div className="task-details-page">
 
-            <button className="back-btn" onClick={() => navigate("/tasks")}>
+            <button className="back-btn" onClick={() => navigateTo("/tasks")}>
                 ← Back to Tasks
             </button>
 

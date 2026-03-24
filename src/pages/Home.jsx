@@ -1,8 +1,7 @@
-import { useNavigate } from "react-router-dom";
+import { navigateTo } from "../utils/navigation";
 import '../css/home.css';
 
 export default function Home() {
-    const navigate = useNavigate();
 
     return (
         <div className="home">
@@ -17,10 +16,10 @@ export default function Home() {
                         TaskBridge helps teams organize work, track progress, and deliver results — all in one place.
                     </p>
                     <div className="hero-actions">
-                        <button className="btn-primary" onClick={() => navigate("/signup")}>
+                        <button className="btn-primary" onClick={() => navigateTo("/signup")}>
                             Get Started Free
                         </button>
-                        <button className="btn-secondary" onClick={() => navigate("/about")}>
+                        <button className="btn-secondary" onClick={() => navigateTo("/about")}>
                             Learn More
                         </button>
                     </div>
@@ -78,7 +77,7 @@ export default function Home() {
             <section className="cta-banner">
                 <h2>Ready to Get Organized?</h2>
                 <p>Join teams already using TaskBridge to ship faster.</p>
-                <button className="btn-primary" onClick={() => navigate("/signup")}>
+                <button className="btn-primary" onClick={() => navigateTo("/signup")}>
                     Start for Free
                 </button>
             </section>

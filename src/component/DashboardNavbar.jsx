@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { NAV_LINKS2 } from '../data/navbar.js';
 import { useAuth } from "../context/AuthContext.jsx";
 import '../css/header.css';
+import { navigateTo } from "../utils/navigation.js";
 
 export default function DashboardNavbar() {
-    const navigate = useNavigate();
     const { logout } = useAuth();
     const [open, setOpen] = useState(false);
 
@@ -13,7 +13,7 @@ export default function DashboardNavbar() {
 
     const handleLogout = async () => {
         await logout();
-        navigate("/login");
+        navigateTo("/login");
         close();
     };
 

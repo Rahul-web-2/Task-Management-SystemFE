@@ -1,14 +1,13 @@
 import { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import { getTasksByUser, createTask, deleteTask } from "../services/TaskApi.js";
 import "../css/tasks.css";
+import { navigateTo } from "../utils/navigation.js";
 
 const STATUSES = ["ALL", "TODO", "IN_PROGRESS", "DONE"];
 
 export default function Tasks() {
 
-    const navigate = useNavigate();
     const { user } = useAuth();
 
     const [tasks, setTasks] = useState([]);
@@ -27,18 +26,16 @@ export default function Tasks() {
 
     /* ---------------- LOAD TASKS ---------------- */
 
-const loadTasks = async () => {
-    try {
-        const data = await getTasksByUser(); // ✅ no email passed
-        console.log("TASKS FROM API:", data);
-        setTasks(data || []);
-    } catch (err) {
-        console.error("Task fetch error:", err);
-        setTasks([]);
-    } finally {
-        setLoading(false);
-    }
-};
+    const loadTasks = async () => {
+        try {
+            const data = await getTasksByUser();
+            setTasks(data || []);
+        } catch (err) {
+            setTasks([]);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
 
@@ -283,7 +280,7 @@ const loadTasks = async () => {
                             key={task.id}
                             className="task-item"
                             onClick={() =>
-                                navigate(`/tasks/${task.id}`, {
+                                navigateTo(`/tasks/${task.id}`, {
                                     state: { task }
                                 })
                             }
@@ -305,18 +302,16 @@ const loadTasks = async () => {
 
                                 {task.priority && (
                                     <span
-                                        className={`priority-badge ${
-                                            priorityClass[task.priority] || ""
-                                        }`}
+                                        className={`priority-badge ${priorityClass[task.priority] || ""
+                                            }`}
                                     >
                                         {task.priority}
                                     </span>
                                 )}
 
                                 <span
-                                    className={`status-badge ${
-                                        statusClass[task.status] || ""
-                                    }`}
+                                    className={`status-badge ${statusClass[task.status] || ""
+                                        }`}
                                 >
                                     {task.status?.replace("_", " ")}
                                 </span>

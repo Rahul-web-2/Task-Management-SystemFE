@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
 import { createUser } from "../services/SignUpApi.js";
 import { useAuth } from "../context/AuthContext.jsx";
+import { navigateTo } from "../utils/navigation.js";
 import "../css/signUp.css";
 
 export default function SignUp() {
 
   const { user, login } = useAuth();
-  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -39,17 +38,17 @@ export default function SignUp() {
       const res = await createUser(formData);
 
       login(res.user);
-      navigate("/dashboard");
+      navigateTo("/dashboard");
 
-    }catch (err) {
+    } catch (err) {
 
-  if (err.status === 409) {
-    setError("User already exists. Please login.");
-  } else {
-    setError("Something went wrong");
-  }
+      if (err.status === 409) {
+        setError("User already exists. Please login.");
+      } else {
+        setError("Something went wrong");
+      }
 
-} finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -103,7 +102,7 @@ export default function SignUp() {
                 {" "}
                 <span
                   style={{ color: "blue", cursor: "pointer" }}
-                  onClick={() => navigate("/login")}
+                  onClick={() => navigateTo("/login")}
                 >
                   Login here
                 </span>
