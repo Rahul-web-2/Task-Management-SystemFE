@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createUser } from "../services/SignUpApi.js";
 import { useAuth } from "../context/AuthContext.jsx";
+import { Navigate } from "react-router-dom";
 import { navigateTo } from "../utils/navigation.js";
 import "../css/signUp.css";
 
@@ -42,7 +43,7 @@ export default function SignUp() {
 
     } catch (err) {
 
-      if (err.status === 409) {
+      if (err.status === 400 && err.message === "USER_ALREADY_EXISTS") {
         setError("User already exists. Please login.");
       } else {
         setError("Something went wrong");
