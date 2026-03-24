@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { NAV_LINKS } from '../data/navbar.js';
 import '../css/header.css';
+import { navigateTo } from "../utils/navigation.js";
 
 export default function Header() {
-    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
 
     const close = () => setOpen(false);
@@ -31,8 +31,8 @@ export default function Header() {
                 </ul>
 
                 <div className="nav-btn">
-                    <button className="btn-login" onClick={() => navigate("/login")}>Login</button>
-                    <button className="btn-signUp" onClick={() => navigate("/signup")}>Sign Up</button>
+                    <button className="btn-login" onClick={() => navigateTo("/login")}>Login</button>
+                    <button className="btn-signUp" onClick={() => navigateTo("/signup")}>Sign Up</button>
                 </div>
 
                 <button
@@ -63,8 +63,8 @@ export default function Header() {
                         ))}
                     </ul>
                     <div className="mobile-nav-btn">
-                        <button className="btn-login" onClick={() => { navigate("/login"); close(); }}>Login</button>
-                        <button className="btn-signUp" onClick={() => { navigate("/signup"); close(); }}>Sign Up</button>
+                        <button className="btn-login" onClick={() => { navigateTo("/login"); close(); }}>Login</button>
+                        <button className="btn-signUp" onClick={() => { navigateTo("/signup"); close(); }}>Sign Up</button>
                     </div>
                 </div>
             )}

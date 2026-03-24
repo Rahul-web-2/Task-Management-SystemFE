@@ -1,9 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import '../css/services.css';
 import { SERVICES } from '../data/servicedata.js';
+import { navigateTo } from "../utils/navigation.js";
+import '../css/services.css';
 
 export default function Services() {
-    const navigate = useNavigate();
 
     return (
         <div className="services-page">
@@ -28,7 +27,7 @@ export default function Services() {
             <section className="services-cta">
                 <h2>Ready to Try It Out?</h2>
                 <p>Sign up free and start organizing your team today.</p>
-                <button className="btn-primary" onClick={() => navigate("/signup")}>
+                <button className="btn-primary" onClick={() => navigateTo("/signup")}>
                     Get Started
                 </button>
             </section>

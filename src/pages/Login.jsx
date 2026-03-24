@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { login } from "../services/LoginApi.js";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import "../css/login.css";
+import { navigateTo } from "../utils/navigation.js";
 
 export default function Login() {
 
@@ -10,7 +11,6 @@ export default function Login() {
     const [error, setError] = useState("");
     const [notFound, setNotFound] = useState(false);
 
-    const navigate = useNavigate();
     const { login: authLogin } = useAuth();
 
     const handleChange = (e) => {
@@ -33,7 +33,7 @@ export default function Login() {
             authLogin(data.user);
 
             // ✅ redirect
-            navigate("/dashboard");
+            navigateTo("/dashboard");
 
         } catch (err) {
 

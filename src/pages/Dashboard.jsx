@@ -1,12 +1,11 @@
 import { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import { getTasksByUser, createTask, getById } from "../services/TaskApi.js";
 import "../css/dashboard.css";
+import { navigateTo } from "../utils/navigation.js";
 
 export default function Dashboard() {
 
-    const navigate = useNavigate();
     const { user } = useAuth();
 
     const [tasks, setTasks] = useState([]);
@@ -361,7 +360,7 @@ export default function Dashboard() {
                                 key={task.id}
                                 className="task-card"
                                 onClick={() =>
-                                    navigate(`/tasks/${task.id}`, {
+                                    navigateTo(`/tasks/${task.id}`, {
                                         state: { task }
                                     })
                                 }
@@ -406,7 +405,7 @@ export default function Dashboard() {
 
                     <button
                         className="view-all-btn"
-                        onClick={() => navigate("/tasks")}
+                        onClick={() => navigateTo("/tasks")}
                     >
                         View all {tasks.length} tasks →
                     </button>

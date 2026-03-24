@@ -1,4 +1,5 @@
 import axios from "axios";
+import { navigateTo } from "../utils/navigation";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API,
@@ -6,14 +7,17 @@ const api = axios.create({
   timeout: 10000,
 });
 
-// On 401: JWT is missing or expired — clear local auth state and redirect.
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const status = error.response?.status;
+    const url = error.config?.url || "";
+
+    if (status === 401 && !url.includes("/auth/login")) {
       localStorage.removeItem("user");
-      window.location.href = "/login";
+      navigateTo("/login");
     }
+
     return Promise.reject(error);
   }
 );
