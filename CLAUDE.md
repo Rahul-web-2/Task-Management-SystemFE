@@ -58,5 +58,5 @@ Deployed to Vercel; [vercel.json](vercel.json) contains a catch-all SPA rewrite 
  
 ## Frontend Reference
  
-- For any backend-related checks, questions, or context, refer to the GitHub repository:
+- For any backend-related checks, questions, or context, refer to the file:
   **D:ProjectFile/Task_Management_System/Task-Management-SystemBE**
